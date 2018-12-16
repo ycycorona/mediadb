@@ -1,0 +1,15 @@
+{
+  "apps": [{
+    "name": "mediadb",
+    "script": "production.js",
+    "cwd": "D:\Code\front-end_workspace\mediadb",
+    "exec_mode": "fork",
+    "max_memory_restart": "1G",
+    "autorestart": true,
+    "node_args": [],
+    "args": [],
+    "env": {
+      
+    }
+  }]
+}
