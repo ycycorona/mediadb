@@ -33,7 +33,9 @@ module.exports = [
   },
   {
     handle: 'router',
-    options: {}
+    options: {
+      enableDefaultRouter: true // 是否启用默认路由解析规则
+    }
   },
   'logic',
   'controller'
