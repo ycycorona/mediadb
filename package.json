@@ -5,7 +5,8 @@
   "author": "ycycorona <ycycorona@qq.com>",
   "scripts": {
     "start": "node development.js",
-    "debug": "node %NODE_DEBUG_OPTION% development.js",
+    "debug": "node --inspect development.js",
+    "webstorm-debug": "node %NODE_DEBUG_OPTION% development.js",
     "test": "THINK_UNIT_TEST=1 nyc ava test/ && nyc report --reporter=html",
     "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
     "lint": "eslint src/",

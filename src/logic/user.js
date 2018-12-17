@@ -1,22 +1,20 @@
 module.exports = class extends think.Logic {
   loginAction() {
     this.allowMethods = 'post';
-
-    let rules = {
-      userName: {
+    this.rules = {
+      identifier: {
         string: true,
         required: true,
         trim: true,
-        method: 'POST'
       },
       token: {
         string: true,
         required: true,
-        method: 'POST'
+      },
+      authType: {
+        string: true,
+        required: true,
       }
     }
-    this.ctx.fail
-    this.validate(rules)
-    console.log(this.validateErrors)
   }
 };
