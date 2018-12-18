@@ -55,9 +55,9 @@ exports.session = {
   type: 'file',
   common: {
     cookie: {
-      name: 'thinkjs'
-      // keys: ['werwer', 'werwer'],
-      // signed: true
+      name: 'sessionID',
+      keys: ['spider', 'web'],
+      signed: true
     }
   },
   file: {
@@ -92,8 +92,8 @@ exports.logger = {
     handle: Console,
     //logSql: isDev,
     layout: {
-      type: 'coloured',
-      //pattern: '%z',
+      type: 'pattern',
+      pattern: '%[[%d] [%z] [%p]%] - %m',
     }
   },
   file: {
@@ -109,6 +109,10 @@ exports.logger = {
     absolute: true,
     pattern: '-yyyy-MM-dd',
     alwaysIncludePattern: true,
-    filename: path.join(think.ROOT_PATH, 'logs/app.log')
+    filename: path.join(think.ROOT_PATH, 'logs/app.log'),
+    layout: {
+      type: 'pattern',
+      pattern: '%[[%d] [%z] [%p]%] - %m',
+    }
   }
 };
