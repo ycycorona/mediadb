@@ -10,7 +10,7 @@ module.exports = class extends think.Service {
     const userAuthInfo = await user.getUserByAuthTypeAndIdentifier(authType, identifier)
     const dataBaseTokenMd5 = userAuthInfo.token
 
-    if (think.isEmpty(userAuthInfo)) {
+    if (!(userAuthInfo instanceof Object) || think.isEmpty(userAuthInfo)) {
       loginRes.errorData = '未找到该用户'
     } else if (userAuthInfo.status_user !== 1) {
       loginRes.errorData = '该用户已禁用'
@@ -24,7 +24,6 @@ module.exports = class extends think.Service {
         user_name: userAuthInfo.user_name
       }
     }
-
 
     think.logger.info('用户登录', {loginRes, userAuthInfo: userAuthInfo, path: __filename})
 

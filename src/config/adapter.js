@@ -1,6 +1,7 @@
 const fileCache = require('think-cache-file');
 const nunjucks = require('think-view-nunjucks');
 const fileSession = require('think-session-file');
+const cookie = require('think-session-cookie');
 const mysql = require('think-model-mysql');
 const {Console, File, DateFile} = require('think-logger3');
 const path = require('path');
@@ -52,17 +53,35 @@ exports.model = {
  * @type {Object}
  */
 exports.session = {
-  type: 'file',
+  type: 'cookie',
   common: {
-    cookie: {
+/*    cookie: {
       name: 'sessionID',
       keys: ['spider', 'web'],
       signed: true
+    },*/
+    cookie: { //session关联cookie设置
+      name: '_sessionStorage',
+      //maxAge: '',
+      //expires: '',
+      path: '/',  //a string indicating the path of the cookie
+      keys: ['spider', 'web'], // 签名时用到的key
+      httpOnly: true,
+      //signed: true, 签名，防篡改 加密时会自动禁止签名
     }
   },
   file: {
     handle: fileSession,
     sessionPath: path.join(think.ROOT_PATH, 'runtime/session')
+  },
+  /**
+   *
+   */
+  cookie: {
+    handle: cookie,
+    cookie: {
+      encrypt: true //encrypt cookie data
+    }
   }
 };
 
