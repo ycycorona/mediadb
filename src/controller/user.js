@@ -7,7 +7,7 @@ module.exports = class extends Base {
     const rememberMe = ctx.request.body.post.rememberMe === '1'
     if (loginRes.flag) {
       await this.session('user_name', loginRes.data.user_name)
-      await this.session('user_sign', think.$helper.md5passwdSalt(loginRes.data.user_name))
+      await this.session('user_sign', think.$helper.md5passwdSalt(loginRes.data.user_name)) // 添加user_sign 用来验证用户登录状态
 
       if (rememberMe) {
         const cookie = this.cookie('__cookie__sessionStorage')
@@ -16,13 +16,18 @@ module.exports = class extends Base {
         })
       }
 
-      this.success('login success');
+      this.success('登陆成功');
     } else {
-      this.fail(2000, 'login fail', loginRes.errorData);
+      this.fail(this.config('Errnos').loginFail, '登录失败', loginRes.errorData);
     }
   }
   async getuserinfoAction() {
     const {ctx} = this
     this.success('user info')
+  }
+  async registerAction() {
+    const {ctx} = this
+    this.body = ctx.request.body.post
+    //const res = await this.service('userService').register(ctx.request.body.post)
   }
 };

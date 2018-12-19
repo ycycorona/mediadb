@@ -1,13 +1,20 @@
 module.exports = class extends think.Service {
 
+  /**
+   * 执行登录
+   * @param identifier
+   * @param token
+   * @param authType
+   * @returns {Promise<{flag: boolean, errorData: string}>}
+   */
   async login({identifier, token, authType}) {
-    const user = this.model('users');
+    const users = this.model('users');
     const loginRes = {
       flag: false,
       errorData: '',
     }
     const reqTokenMd5 = think.$helper.md5passwdSalt(token)
-    const userAuthInfo = await user.getUserByAuthTypeAndIdentifier(authType, identifier)
+    const userAuthInfo = await users.getUserByAuthTypeAndIdentifier(authType, identifier)
     const dataBaseTokenMd5 = userAuthInfo.token
 
     if (!(userAuthInfo instanceof Object) || think.isEmpty(userAuthInfo)) {
@@ -28,5 +35,20 @@ module.exports = class extends think.Service {
     think.logger.info('用户登录', {loginRes, userAuthInfo: userAuthInfo, path: __filename})
 
     return loginRes
+  }
+
+  /**
+   * 根据user_name获取用户信息
+   * @param userName
+   * @returns {Promise<void>}
+   */
+  async getUserInfo(userName) {
+    const users = this.model('users');
+    const userInfo = await users.getUserInfoByUserName()
+    return userInfo
+  }
+  async register(user) {
+    const users = this.model('users');
+    const res = await users.createUser(user)
   }
 };

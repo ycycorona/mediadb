@@ -1,5 +1,5 @@
 const NeedLogin = [
-  'getuserinfo',
+  'getuserinfo'
 ]
 module.exports = class extends think.Logic {
   async __before() {
@@ -12,7 +12,6 @@ module.exports = class extends think.Logic {
         return false
       }
     }
-
   }
 
   loginAction() {
@@ -33,8 +32,8 @@ module.exports = class extends think.Logic {
       }
     }
   }
-  async getuserinfoAction() {
-    this.allowMethods = 'get';
+  getuserinfoAction() {
+    this.allowMethods = 'get'
     this.rules = {
 
     }
@@ -47,5 +46,36 @@ module.exports = class extends think.Logic {
     if (!flag) {
       return false
     }*/
+  }
+  registerAction() {
+    this.allowMethods = 'post'
+    this.rules = {
+      userName: {
+        string: true,
+        required: true,
+        trim: true,
+        length: {max: 50}
+      },
+      avatar: {
+        string: true,
+        required: false,
+        length: {max: 250}
+      },
+      nickName: {
+        string: true,
+        required: true,
+        length: {max: 50}
+      },
+      authType: {
+        string: true,
+        required: true,
+        length: {max: 50}
+      },
+      token: {
+        string: true,
+        required: true,
+        length: {max: 100}
+      },
+    }
   }
 };

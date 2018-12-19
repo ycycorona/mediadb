@@ -9,7 +9,8 @@ module.exports = {
   defaultErrno: 1000, // default errno
   validateDefaultErrno: 1001, // validate default errno
   Errnos: {
-    noLogin: 1020 // 未获取到登录状态
+    noLogin: 1020, // 未获取到登录状态
+    loginFail: 1010 // 登录失败
   },
   Errmsgs: {
     noLogin: '未获取到登录状态' // 未获取到登录状态

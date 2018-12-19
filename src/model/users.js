@@ -27,6 +27,19 @@ module.exports = class extends think.Model {
           'id': 'id_user',
         }
       })
-      .find();
+      .find()
+  }
+  getUserInfoByUserName(user_name='') {
+    return this.alias('u')
+      .where({user_name})
+      .find()
+  }
+  createUser({user_name, avatar, nick_name, id_user_create_by, id_user_update_by, status}) {
+    const obj = {user_name, avatar, nick_name, id_user_create_by, id_user_update_by, status}
+    Object.keys(obj).forEach((key, index) => {
+      if(!obj[key]) {delete obj[key]}
+    })
+    console.log(obj)
+    //let insertId = this.model.add(obj);
   }
 };
