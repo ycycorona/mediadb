@@ -61,8 +61,8 @@ exports.session = {
       signed: true
     },*/
     cookie: { //session关联cookie设置
-      name: '_sessionStorage',
-      //maxAge: '',
+      name: '__cookie__sessionStorage',
+      maxAge: 1000 * 60 * 60 * 24,
       //expires: '',
       path: '/',  //a string indicating the path of the cookie
       keys: ['spider', 'web'], // 签名时用到的key
