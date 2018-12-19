@@ -20,3 +20,13 @@ Use pm2 to deploy app on production enviroment.
 ```
 pm2 startOrReload pm2.json
 ```
+
+## unit test
+
+```
+npm i 
+npm install --global ava
+npm i nyc -g
+set THINK_UNIT_TEST=1 && ava test/model --verbose
+
+```
