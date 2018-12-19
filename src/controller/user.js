@@ -6,7 +6,9 @@ module.exports = class extends Base {
     const loginRes = await this.service('userService').login(ctx.request.body.post)
     const rememberMe = ctx.request.body.post.rememberMe === '1'
     if (loginRes.flag) {
+      // 登陆成功 设置session
       await this.session('user_name', loginRes.data.user_name)
+      await this.session('id_user', loginRes.data.id_user)
       await this.session('user_sign', think.$helper.md5passwdSalt(loginRes.data.user_name)) // 添加user_sign 用来验证用户登录状态
 
       if (rememberMe) {
@@ -27,7 +29,16 @@ module.exports = class extends Base {
   }
   async registerAction() {
     const {ctx} = this
-    this.body = ctx.request.body.post
-    //const res = await this.service('userService').register(ctx.request.body.post)
+    // this.body = ctx.request.body.post
+    const postData = ctx.request.body.post
+    postData.idUserCreateBy = await this.session('id_user')
+    postData.idUserUpdateBy = await this.session('id_user')
+    const res = await this.service('userService').register(postData)
+    if (res.flag) {
+      this.success({msg:'用户创建成功', id_create: res.id_create})
+    } else {
+      this.fail(this.config('Errnos').registerFail, '用户创建失败', res.errmsg)
+    }
+
   }
 };

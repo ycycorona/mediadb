@@ -29,17 +29,43 @@ module.exports = class extends think.Model {
       })
       .find()
   }
-  getUserInfoByUserName(user_name='') {
+
+  getUserInfoByUserName(user_name = '') {
     return this.alias('u')
       .where({user_name})
       .find()
   }
-  createUser({user_name, avatar, nick_name, id_user_create_by, id_user_update_by, status}) {
-    const obj = {user_name, avatar, nick_name, id_user_create_by, id_user_update_by, status}
+
+  async createUser(createUserInfo) {
+    const res = {
+      flag: false,
+      id_create: '',
+      errmsg: ''
+    }
+    const obj = Object.assign({}, createUserInfo)
+    const newObj = {}
     Object.keys(obj).forEach((key, index) => {
-      if(!obj[key]) {delete obj[key]}
+      if (!obj[key]) {
+        delete obj[key]
+      } else {
+        newObj[think.snakeCase(key)] = obj[key]
+      }
     })
-    console.log(obj)
-    //let insertId = this.model.add(obj);
+
+    let insertRes = await this.thenAdd(newObj, {user_name: newObj.user_name})
+      .catch(error => {
+        res.errmsg = error.message || '数据库插入用户失败'
+      })
+
+    if (!res.errmsg) {
+      if (insertRes.type === 'exist') {
+        res.errmsg = '插入失败：用户名已存在，无法重复创建'
+      } else {
+        res.flag = true
+        res.id_create = insertRes
+      }
+    }
+
+    return res
   }
 };

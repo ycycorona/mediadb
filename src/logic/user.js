@@ -1,5 +1,5 @@
 const NeedLogin = [
-  'getuserinfo'
+  'getuserinfo', 'register'
 ]
 module.exports = class extends think.Logic {
   async __before() {

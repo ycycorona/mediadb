@@ -28,7 +28,8 @@ module.exports = class extends think.Service {
     } else {
       loginRes.flag = true
       loginRes.data = {
-        user_name: userAuthInfo.user_name
+        user_name: userAuthInfo.user_name,
+        id_user: userAuthInfo.id_user
       }
     }
 
@@ -47,8 +48,9 @@ module.exports = class extends think.Service {
     const userInfo = await users.getUserInfoByUserName()
     return userInfo
   }
-  async register(user) {
+  async register(createUserInfo) {
     const users = this.model('users');
-    const res = await users.createUser(user)
+    const res = await users.createUser(createUserInfo)
+    return res
   }
 };
