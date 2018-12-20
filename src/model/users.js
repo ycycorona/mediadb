@@ -1,3 +1,4 @@
+const User = require('./entity/User')
 module.exports = class extends think.Model {
   /*  get relation() {
       return {

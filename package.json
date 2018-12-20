@@ -8,12 +8,13 @@
     "debug": "node --inspect development.js",
     "webstorm-debug": "node %NODE_DEBUG_OPTION% development.js",
     "test": "set THINK_UNIT_TEST=1 && nyc ava test/ && nyc report --reporter=html",
-    "test-simple": "set THINK_UNIT_TEST=1 && ava test/ --serbose" ,
+    "test-simple": "set THINK_UNIT_TEST=1 && ava test/ --serbose",
     "compile": "babel --no-babelrc src/ --presets think-node --out-dir app/",
     "lint": "eslint src/",
     "lint-fix": "eslint --fix src/"
   },
   "dependencies": {
+    "lodash": "^4.17.11",
     "think-cache": "^1.0.0",
     "think-cache-file": "^1.0.8",
     "think-logger3": "^1.0.0",
