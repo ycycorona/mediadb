@@ -48,6 +48,7 @@ module.exports = class extends think.Service {
     const userInfo = await users.getUserInfoByUserName()
     return userInfo
   }
+
   async register(createUserInfo) {
     const users = this.model('users');
     const res = await users.createUser(createUserInfo)

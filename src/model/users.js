@@ -1,4 +1,5 @@
 const User = require('./entity/User')
+const Auth = require('./entity/Auth')
 module.exports = class extends think.Model {
   /*  get relation() {
       return {
@@ -37,36 +38,41 @@ module.exports = class extends think.Model {
       .find()
   }
 
-  async createUser(createUserInfo) {
+  async createUser(createUserInfo, createAuthInfo) {
+    const userAuths = this.model('user_auths').db(this.db());
     const res = {
       flag: false,
-      id_create: '',
+      id_user: 0,
+      id_auth: 0,
       errmsg: ''
     }
-    const obj = Object.assign({}, createUserInfo)
-    const newObj = {}
-    Object.keys(obj).forEach((key, index) => {
-      if (!obj[key]) {
-        delete obj[key]
-      } else {
-        newObj[think.snakeCase(key)] = obj[key]
-      }
-    })
+    createAuthInfo = {authType: 'passwd', identifier: 'whh', token: 'ed36a6de9a770e96c2e6abc1715365e2'}
+    const insertUserObj = new User(think.$helper.objSnakeCase(createUserInfo))
+    const insertAuthObj = new Auth(think.$helper.objSnakeCase(createAuthInfo))
 
-    let insertRes = await this.thenAdd(newObj, {user_name: newObj.user_name})
-      .catch(error => {
-        res.errmsg = error.message || '数据库插入用户失败'
+    const result = await this.transaction(async () => {
+      let userInsertRes = await this.thenAdd(insertUserObj, {user_name: insertUserObj.user_name})
+        .catch(error => {
+          throw error
+        })
+      if (userInsertRes.type === 'exist') {
+        throw Error('插入失败：用户名已存在，无法重复创建')
+      }
+      res.id_user = userInsertRes.id // 创建的用户的id
+      insertAuthObj.id_user = userInsertRes.id // users_auth表中的id_user
+      let authInsertRes = await userAuths.thenUpdate(insertAuthObj, {id_user: insertAuthObj.id_user})
+        .catch(error => {
+          throw error
+        })
+      res.id_auth = authInsertRes
+    })
+      .catch(err => {
+        res.errmsg = err.message
       })
 
     if (!res.errmsg) {
-      if (insertRes.type === 'exist') {
-        res.errmsg = '插入失败：用户名已存在，无法重复创建'
-      } else {
-        res.flag = true
-        res.id_create = insertRes
-      }
+      res.flag = true
     }
-
     return res
   }
 };

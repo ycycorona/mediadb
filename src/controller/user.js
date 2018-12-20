@@ -31,11 +31,11 @@ module.exports = class extends Base {
     const {ctx} = this
     // this.body = ctx.request.body.post
     const postData = ctx.request.body.post
-    postData.idUserCreateBy = await this.session('id_user')
-    postData.idUserUpdateBy = await this.session('id_user')
+    postData.idUserCreateBy = (await this.session('id_user')) || '0'
+    postData.idUserUpdateBy = await this.session('id_user') || '0'
     const res = await this.service('userService').register(postData)
     if (res.flag) {
-      this.success({msg:'用户创建成功', id_create: res.id_create})
+      this.success({msg:'用户创建成功', id_user: res.id_user, id_auth: res.id_auth})
     } else {
       this.fail(this.config('Errnos').registerFail, '用户创建失败', res.errmsg)
     }
