@@ -3,10 +3,10 @@ const Base = require('./base.js');
 module.exports = class extends Base {
   async indexAction() {
     const {ctx} = this
-    //this.body = await this.session()
+    this.body = await this.session()
     //this.body = await this.cookie('__cookie__sessionStorage')
-    const da = think.$helper.md5passwdSalt(think.md5('ycy6323892'))
-    console.log(think.md5('ycy6323892'), da)
+    //const da = think.$helper.md5passwdSalt(think.md5('ycy6323892'))
+
   }
   async rememberAction() {
     const {ctx} = this

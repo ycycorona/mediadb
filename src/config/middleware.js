@@ -1,7 +1,13 @@
 const path = require('path');
 const isDev = think.env === 'development';
-
+const testMiddleware = require('../middleware/test-middleware')
 module.exports = [
+  {
+    handle: testMiddleware,
+    options: {
+      breakRequest: true
+    }
+  },
   {
     handle: 'meta',
     options: {
